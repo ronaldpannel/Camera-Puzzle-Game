@@ -7,6 +7,8 @@ let SCALER = 0.8;
 let SIZE = { x: 0, y: 0, width: 0, height: 0, rows: 3, columns: 3 };
 let PIECES = [];
 let SELECTED_PIECE = null;
+let START_TIME = null;
+let END_TIME = null;
 
 function main() {
   CANVAS = document.getElementById("canvas1");
@@ -26,12 +28,71 @@ function main() {
         initPieces(SIZE.rows, SIZE.columns);
         //randomizePieces();
 
-        updateCanvas();
+        updateGame();
       };
     })
     .catch(function (err) {
       alert("camera  error; " + err);
     });
+}
+function setDifficulty() {
+  let diff = document.getElementById("difficulty").value;
+  switch (diff) {
+    case "easy":
+      initPieces(3, 3);
+      break;
+    case "medium":
+      initPieces(5, 5);
+      break;
+    case "hard":
+      initPieces(10, 10);
+      break;
+    case "insane":
+      initPieces(40, 25);
+      break;
+  }
+}
+
+function restart() {
+  START_TIME = new Date().getTime();
+  END_TIME = null;
+  randomizePieces();
+}
+function upDateTime() {
+  let now = new Date().getTime();
+  if (START_TIME != null) {
+    if (END_TIME != null) {
+      document.getElementById("time").innerHTML = formatTime(
+        END_TIME - START_TIME
+      );
+    } else {
+      document.getElementById("time").innerHTML = formatTime(now - START_TIME);
+    }
+  }
+}
+
+function isComplete() {
+  for (let i = 0; i < PIECES.length; i++) {
+    if (PIECES[i].correct == false) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function formatTime(milliseconds) {
+  let seconds = Math.floor(milliseconds / 1000);
+  let s = Math.floor(seconds % 60);
+  let m = Math.floor((seconds % (60 * 60)) / 60);
+  let h = Math.floor((seconds % (60 * 60 * 24)) / (60 * 60));
+
+  let formattedTime = h.toString().padStart(2, "0");
+  formattedTime += ":";
+  formattedTime += m.toString().padStart(2, "0");
+  formattedTime += ":";
+  formattedTime += s.toString().padStart(2, "0");
+
+  return formattedTime;
 }
 
 function addEventListeners() {
@@ -54,9 +115,8 @@ function onTouchMove(evt) {
   onMouseMove(loc);
 }
 
-function onTouchEnd(evt) {
-  let loc = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
-  onMouseUp(loc);
+function onTouchEnd() {
+  onMouseUp();
 }
 
 function onMouseDown(evt) {
@@ -71,6 +131,7 @@ function onMouseDown(evt) {
       x: evt.x - SELECTED_PIECE.x,
       y: evt.y - SELECTED_PIECE.y,
     };
+    SELECTED_PIECE.correct = false;
   }
 }
 
@@ -83,6 +144,10 @@ function onMouseMove(evt) {
 function onMouseUp() {
   if (SELECTED_PIECE.isClose()) {
     SELECTED_PIECE.snap();
+    if (isComplete() && END_TIME == null) {
+      let now = new Date().getTime();
+      END_TIME = now;
+    }
   }
   SELECTED_PIECE = null;
 }
@@ -115,7 +180,7 @@ function handleResize() {
   SIZE.x = window.innerWidth / 2 - SIZE.width / 2;
   SIZE.y = window.innerHeight / 2 - SIZE.height / 2;
 }
-function updateCanvas() {
+function updateGame() {
   CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
   CONTEXT.globalAlpha = 0.5;
   CONTEXT.drawImage(VIDEO, SIZE.x, SIZE.y, SIZE.width, SIZE.height);
@@ -123,7 +188,8 @@ function updateCanvas() {
   for (let i = 0; i < PIECES.length; i++) {
     PIECES[i].draw(CONTEXT);
   }
-  window.requestAnimationFrame(updateCanvas);
+  upDateTime();
+  window.requestAnimationFrame(updateGame);
 }
 
 function initPieces(rows, cols) {
@@ -145,6 +211,7 @@ function randomizePieces() {
     };
     PIECES[i].x = loc.x;
     PIECES[i].y = loc.y;
+    PIECES[i].correct = false;
   }
 }
 
@@ -158,6 +225,7 @@ class Piece {
     this.height = SIZE.height / SIZE.rows;
     this.xCorrect = this.x;
     this.yCorrect = this.y;
+    this.correct = true;
   }
   draw(CONTEXT) {
     CONTEXT.beginPath();
@@ -191,6 +259,7 @@ class Piece {
   snap() {
     this.x = this.xCorrect;
     this.y = this.yCorrect;
+    this.correct = true;
   }
 }
 function distance(p1, p2) {

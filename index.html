@@ -8,10 +8,22 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body onload="main()">
-   
     <canvas class="canvas1" id="canvas1"> </canvas>
+    <div class="menuItems" id="menuItems">
+      <div class="menu" id="menu">
+        <div class="controls" id="controls">
+          Difficulty <select id="difficulty" onchange="setDifficulty()">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+            <option value="insane">Insane</option>
+          </select>
+          <button onclick="restart()">Start</button>
+        </div>
+      </div>
+      <div class="time" id="time"></div>
+    </div>
 
-    
     <script src="utilities.js"></script>
     <script src="vector.js"></script>
     <script src="index.js"></script>
