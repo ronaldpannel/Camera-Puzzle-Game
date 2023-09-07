@@ -3,9 +3,44 @@ body {
   overflow: hidden;
   overscroll-behavior: none;
   touch-action: none;
-  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
 }
-.menuItems{
+.menuItems {
+  width: 80vmin;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  padding: 5vmin;
+  /* border: 1vmin rgba(0, 0, 0, 0.6) solid; */
+  font-size: 7vmin;
+}
+button {
+  font-size: 7vmin;
+  background: rgb(123, 136, 196);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+  border-radius: 1vmin;
+}
+button:hover {
+  color: black;
+  background: orange;
+}
+select {
+  font-size: 7vmin;
+  cursor: pointer;
+  border: none;
+  border-radius: 1vmin;
+  outline: none;
+}
+.time {
+  font-size: 7vmin;
   position: absolute;
   top: 0;
+  left: 50%;
+  transform: translate(-50%);
 }

@@ -12,17 +12,21 @@
     <div class="menuItems" id="menuItems">
       <div class="menu" id="menu">
         <div class="controls" id="controls">
-          Difficulty <select id="difficulty" onchange="setDifficulty()">
+          <img src="title.png" style="width: 90%" alt="" />
+          Difficulty
+          <select id="difficulty" onchange="setDifficulty()">
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
             <option value="insane">Insane</option>
           </select>
+          <br />
+          <br />
           <button onclick="restart()">Start</button>
         </div>
       </div>
-      <div class="time" id="time"></div>
     </div>
+    <div class="time" id="time"></div>
 
     <script src="utilities.js"></script>
     <script src="vector.js"></script>

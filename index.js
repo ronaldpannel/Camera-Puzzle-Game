@@ -57,6 +57,7 @@ function restart() {
   START_TIME = new Date().getTime();
   END_TIME = null;
   randomizePieces();
+  document.getElementById('menuItems').style.display = 'none'
 }
 function upDateTime() {
   let now = new Date().getTime();
