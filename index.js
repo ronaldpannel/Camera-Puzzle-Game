@@ -22,6 +22,11 @@ let keys = {
   MI: 329.6,
 };
 
+const easyH = document.getElementById("hEasy");
+const mediumH = document.getElementById("hMedium");
+const hardH = document.getElementById("hHard");
+const insaneH = document.getElementById("hInsane");
+
 function main() {
   CANVAS = document.getElementById("canvas1");
   CONTEXT = CANVAS.getContext("2d");
